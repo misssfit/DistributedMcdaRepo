@@ -18,7 +18,6 @@ namespace CalculatingEngine
         {
             var result = _taskQueueManager.GetAllTasks();
             return result;
-           
         }
 
         public OperationStatus Calculate(string methodName, List<KeyValuePair<string, double[][]>> inputParameters)
