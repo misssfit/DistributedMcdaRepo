@@ -53,7 +53,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Service References\ServiceReference\CalculatingService.wsdl" />
     <None Include="Service References\ServiceReference\CalculatingService.xsd">
       <SubType>Designer</SubType>
