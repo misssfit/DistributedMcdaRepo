@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine" />
+  <xs:complexType name="ArrayOfMethodDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MethodDescription" nillable="true" type="tns:MethodDescription" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMethodDescription" nillable="true" type="tns:ArrayOfMethodDescription" />
+  <xs:complexType name="MethodDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MethodName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Parameters" nillable="true" type="q1:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MethodDescription" nillable="true" type="tns:MethodDescription" />
+  <xs:simpleType name="TaskPool">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Queue" />
+      <xs:enumeration value="Active" />
+      <xs:enumeration value="Inactive" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TaskPool" nillable="true" type="tns:TaskPool" />
+  <xs:complexType name="ArrayOfTaskInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TaskInfo" nillable="true" type="tns:TaskInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTaskInfo" nillable="true" type="tns:ArrayOfTaskInfo" />
+  <xs:complexType name="TaskInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CalculationStartTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CreationTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MethodName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CalculatingEngine" minOccurs="0" name="Status" type="q2:TaskStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TaskInfo" nillable="true" type="tns:TaskInfo" />
+  <xs:complexType name="OperationStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Status" type="tns:RequestStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OperationStatus" nillable="true" type="tns:OperationStatus" />
+  <xs:simpleType name="RequestStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Ok" />
+      <xs:enumeration value="Error" />
+      <xs:enumeration value="NotReady" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="RequestStatus" nillable="true" type="tns:RequestStatus" />
+  <xs:complexType name="CalculationResult">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Data" nillable="true" type="q3:ArrayOfArrayOfdouble" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CalculatingEngine" minOccurs="0" name="Status" type="q4:TaskStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CalculationResult" nillable="true" type="tns:CalculationResult" />
+</xs:schema>
