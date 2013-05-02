@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Collections.Generic" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" />
-  <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:complexType name="ArrayOfKeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs" type="tns:KeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfKeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs" nillable="true" type="tns:ArrayOfKeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs" />
-  <xs:complexType name="KeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs">
-    <xs:annotation>
-      <xs:appinfo>
-        <GenericType Name="KeyValuePairOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
-          <GenericParameter Name="TaskPool" Namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" />
-          <GenericParameter Name="ArrayOfTaskInfo" Namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" />
-        </GenericType>
-        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
-      </xs:appinfo>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" name="key" type="q1:TaskPool" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" name="value" nillable="true" type="q2:ArrayOfTaskInfo" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="KeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs" nillable="true" type="tns:KeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs" />
+  <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="ArrayOfKeyValuePairOfstringArrayOfArrayOfdoublety7Ep6D1">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValuePairOfstringArrayOfArrayOfdoublety7Ep6D1" type="tns:KeyValuePairOfstringArrayOfArrayOfdoublety7Ep6D1" />
@@ -43,7 +20,7 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element name="key" nillable="true" type="xs:string" />
-      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="value" nillable="true" type="q3:ArrayOfArrayOfdouble" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="value" nillable="true" type="q1:ArrayOfArrayOfdouble" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="KeyValuePairOfstringArrayOfArrayOfdoublety7Ep6D1" nillable="true" type="tns:KeyValuePairOfstringArrayOfArrayOfdoublety7Ep6D1" />

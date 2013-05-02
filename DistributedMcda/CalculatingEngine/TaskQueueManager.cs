@@ -172,9 +172,50 @@ namespace CalculatingEngine
                 var tasks = _tasksQueue.Select(p => p.TaskInfo).ToList();
                 result.Add(new KeyValuePair<TaskPool, List<TaskInfo>>(TaskPool.Queue, tasks));
             }
-            
+
             return result;
         }
+
+        internal bool DeleteAll(TaskPool pool)
+        {
+            Console.WriteLine("[bulk delete]" + pool);
+            switch (pool)
+            {
+                case TaskPool.Queue:
+                    lock (_tasksQueue)
+                    {
+                        _tasksQueue.Clear();
+                    }
+                    return true;
+
+                case TaskPool.Inactive:
+                    lock (_inactiveTasks)
+                    {
+                        _inactiveTasks.Clear();
+                    }
+                    return true;
+                case TaskPool.Active:
+                    lock (_activeTasks)
+                    {
+                        foreach (var task in _activeTasks)
+                        {
+                            try
+                            {
+                                task.Stop();
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("[bulk delete] Cannot delete/stop task with id: " + task.Id + ". " + ex.Message);
+                            }
+                        }
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+
 
         protected override void OnTick(object sender, ElapsedEventArgs e)
         {
@@ -211,7 +252,11 @@ namespace CalculatingEngine
         {
             lock (_activeTasks)
             {
-                var toBeRemoved = _activeTasks.FindAll(p => DateTime.UtcNow.Subtract(p.CalculationStartTimestamp).TotalMilliseconds >= Configuration.TasksCalculationTimeout);
+                var toBeRemoved =
+                    _activeTasks.FindAll(
+                        p =>
+                        DateTime.UtcNow.Subtract(p.CalculationStartTimestamp).TotalMilliseconds >=
+                        Configuration.TasksCalculationTimeout);
                 //if tasks are in progress, stop threads before deleting them
                 toBeRemoved.Where(p => p.Status == TaskStatus.InProgress).ToList().ForEach(p => p.Stop());
 
@@ -222,9 +267,13 @@ namespace CalculatingEngine
                     foreach (var calculationTask in toBeRemoved)
                     {
                         Console.WriteLine("* To Remove:  " + calculationTask);
-                        Console.WriteLine("** " + DateTime.UtcNow.Subtract(calculationTask.CreationTimestamp).TotalMilliseconds);
+                        Console.WriteLine("** " +
+                                          DateTime.UtcNow.Subtract(calculationTask.CreationTimestamp).TotalMilliseconds);
                     }
-                    _activeTasks.RemoveAll(p => DateTime.UtcNow.Subtract(p.CalculationStartTimestamp).TotalMilliseconds >= Configuration.TasksCalculationTimeout);
+                    _activeTasks.RemoveAll(
+                        p =>
+                        DateTime.UtcNow.Subtract(p.CalculationStartTimestamp).TotalMilliseconds >=
+                        Configuration.TasksCalculationTimeout);
                 }
             }
         }
@@ -233,7 +282,11 @@ namespace CalculatingEngine
         {
             lock (_inactiveTasks)
             {
-                var toBeRemoved = _inactiveTasks.FindAll(p => DateTime.UtcNow.Subtract(p.CalculationFinishTimestamp).TotalMilliseconds >= Configuration.CalculatedTasksTimeout);
+                var toBeRemoved =
+                    _inactiveTasks.FindAll(
+                        p =>
+                        DateTime.UtcNow.Subtract(p.CalculationFinishTimestamp).TotalMilliseconds >=
+                        Configuration.CalculatedTasksTimeout);
 
                 if (toBeRemoved.Count > 0)
                 {
@@ -242,9 +295,13 @@ namespace CalculatingEngine
                     foreach (var calculationTask in toBeRemoved)
                     {
                         Console.WriteLine("* To Remove:  " + calculationTask);
-                        Console.WriteLine("** " + DateTime.UtcNow.Subtract(calculationTask.CreationTimestamp).TotalMilliseconds);
+                        Console.WriteLine("** " +
+                                          DateTime.UtcNow.Subtract(calculationTask.CreationTimestamp).TotalMilliseconds);
                     }
-                    _inactiveTasks.RemoveAll(p => DateTime.UtcNow.Subtract(p.CalculationFinishTimestamp).TotalMilliseconds >= Configuration.CalculatedTasksTimeout);
+                    _inactiveTasks.RemoveAll(
+                        p =>
+                        DateTime.UtcNow.Subtract(p.CalculationFinishTimestamp).TotalMilliseconds >=
+                        Configuration.CalculatedTasksTimeout);
                 }
             }
         }
