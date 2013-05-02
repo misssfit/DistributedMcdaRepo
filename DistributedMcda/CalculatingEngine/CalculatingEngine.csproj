@@ -45,11 +45,13 @@
     <Compile Include="CalculatingService.cs" />
     <Compile Include="CalculationTask.cs" />
     <Compile Include="Data\CalculationResult.cs" />
+    <Compile Include="ITaskDeleter.cs" />
     <Compile Include="Data\MethodDescription.cs" />
     <Compile Include="Data\OperationStatus.cs" />
     <Compile Include="Data\RequestStatus.cs" />
     <Compile Include="Data\TaskInfo.cs" />
     <Compile Include="Data\TaskPool.cs" />
+    <Compile Include="IAdministrationService.cs" />
     <Compile Include="ICalculatingService.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="MethodRegistry.cs" />

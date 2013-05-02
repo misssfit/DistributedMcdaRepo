@@ -5,7 +5,7 @@ using CalculatingEngine.Data;
 namespace CalculatingEngine
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CalculatingService :  ICalculatingService
+    public class CalculatingService : ICalculatingService, IAdministrationService
     {
         private readonly TaskQueueManager _taskQueueManager = new TaskQueueManager();
         
@@ -18,7 +18,6 @@ namespace CalculatingEngine
         {
             var result = _taskQueueManager.GetAllTasks();
             return result;
-           
         }
 
         public OperationStatus Calculate(string methodName, List<KeyValuePair<string, double[][]>> inputParameters)
@@ -48,6 +47,13 @@ namespace CalculatingEngine
             var operationStatus = new OperationStatus();
             operationStatus.Id = id;
             operationStatus.Status = _taskQueueManager.PrioritizeTask(id) ? RequestStatus.Ok : RequestStatus.Error;
+            return operationStatus;
+        }
+
+        public OperationStatus DeleteAll(TaskPool pool)
+        {
+            var operationStatus = new OperationStatus();
+            operationStatus.Status = _taskQueueManager.DeleteAll(pool) ? RequestStatus.Ok : RequestStatus.Error;
             return operationStatus;
         }
     }

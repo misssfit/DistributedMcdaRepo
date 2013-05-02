@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Demo.AdminServiceReference;
 using Demo.ServiceReference;
+using OperationStatus = Demo.ServiceReference.OperationStatus;
 
 namespace Demo
 {
@@ -13,80 +15,83 @@ namespace Demo
         {
             using (var client = new CalculatingServiceClient())
             {
-                var et = SampleET();
-
-                var w = new double[,]
+                using (var adm = new AdministrationServiceClient())
                 {
-                    {0.12, 0.13, 0.05, 0.06, 0.04, 0.07, 0.04, 0.08, 0.12, 0.14, 0.04, 0.07, 0.04},
-                    {1, -1, 1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1}
-                };
+                    var et = SampleET();
 
-                //  Promethee promethee = new Promethee();
-                var input = new List<KeyValuePair<string, double[][]>>();
-                input.Add(new KeyValuePair<string, double[][]>("weights", w.ToJagged()));
-                input.Add(new KeyValuePair<string, double[][]>("evaluationTable", et.ToJagged()));
+                    var w = new double[,]
+                        {
+                            {0.12, 0.13, 0.05, 0.06, 0.04, 0.07, 0.04, 0.08, 0.12, 0.14, 0.04, 0.07, 0.04},
+                            {1, -1, 1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1}
+                        };
 
-
-                var list = new List<OperationStatus>();
-                for (int i = 0; i < 20; ++i)
-                {
-                    var res1 = client.Calculate("Promethee", input.ToArray());
-                    list.Add(res1);
-                    Console.WriteLine("Created  " + res1.Id);
-                }
-
-                for (int i = 5; i < 15; ++i)
-                {
-                    var res1 = client.DeleteTask(list[i].Id);
-                    Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
-                }
-
-                for (int i = 5; i < 15; ++i)
-                {
-                    var res1 = client.DeleteTask(list[i].Id);
-                    Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
-                }
+                    //  Promethee promethee = new Promethee();
+                    var input = new List<KeyValuePair<string, double[][]>>();
+                    input.Add(new KeyValuePair<string, double[][]>("weights", w.ToJagged()));
+                    input.Add(new KeyValuePair<string, double[][]>("evaluationTable", et.ToJagged()));
 
 
-                foreach (var operationStatuse in list)
-                {
-                    var res1 = client.GetResult(operationStatuse.Id);
-                    Console.WriteLine("Result  " + "  " + res1.Status);
-                }
-                
-
-                //Thread.Sleep(3000);
-                //var res = new CalculationResult() { Status = TaskStatus.InProgress };
-                //while (res.Status == TaskStatus.InProgress)
-                //{
-                //    res = client.GetResult(res1.Id);
-                //    Thread.Sleep(200);
-                //}
-                ////    Console.WriteLine("Result" + "  " + res1.Status);
-                //PrintArray(((double[][])res.Data).ToMultiD());
-
-                var methods = client.GetAllMethods();
-                foreach (var methodDescription in methods)
-                {
-                    Console.Write("Method: " + methodDescription.MethodName);
-                    foreach (var paramseter in methodDescription.Parameters)
+                    var list = new List<OperationStatus>();
+                    for (int i = 0; i < 20; ++i)
                     {
-                        Console.Write(" | " + paramseter);
+                        var res1 = client.Calculate("Promethee", input.ToArray());
+                        list.Add(res1);
+                        Console.WriteLine("Created  " + res1.Id);
                     }
-                    Console.WriteLine();
-                }
 
-                while (true)
-                {
-                    var tasks = client.GetAllTasks();
-                    foreach (var keyValuePair in tasks)
+                    for (int i = 5; i < 15; ++i)
                     {
-                        PrintTaskPool(keyValuePair.Key, keyValuePair.Value);
+                        var res1 = client.DeleteTask(list[i].Id);
+                        Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
                     }
-                    Thread.Sleep(2000);
-                    Console.WriteLine("----------------------------------------------------------------");
+
+                    for (int i = 5; i < 15; ++i)
+                    {
+                        var res1 = client.DeleteTask(list[i].Id);
+                        Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
+                    }
+
+
+                    foreach (var operationStatuse in list)
+                    {
+                        var res1 = client.GetResult(operationStatuse.Id);
+                        Console.WriteLine("Result  " + "  " + res1.Status);
+                    }
+
+
+                    //Thread.Sleep(3000);
+                    //var res = new CalculationResult() { Status = TaskStatus.InProgress };
+                    //while (res.Status == TaskStatus.InProgress)
+                    //{
+                    //    res = client.GetResult(res1.Id);
+                    //    Thread.Sleep(200);
+                    //}
+                    ////    Console.WriteLine("Result" + "  " + res1.Status);
+                    //PrintArray(((double[][])res.Data).ToMultiD());
+
+                    var methods = client.GetAllMethods();
+                    foreach (var methodDescription in methods)
+                    {
+                        Console.Write("Method: " + methodDescription.MethodName);
+                        foreach (var paramseter in methodDescription.Parameters)
+                        {
+                            Console.Write(" | " + paramseter);
+                        }
+                        Console.WriteLine();
+                    }
+
+                    while (true)
+                    {
+                        var tasks = adm.GetAllTasks();
+                        foreach (var keyValuePair in tasks)
+                        {
+                            PrintTaskPool(keyValuePair.Key, keyValuePair.Value);
+                        }
+                        Thread.Sleep(2000);
+                        Console.WriteLine("----------------------------------------------------------------");
+                    }
+                    Console.ReadLine();
                 }
-                Console.ReadLine();
             }
         }
 
