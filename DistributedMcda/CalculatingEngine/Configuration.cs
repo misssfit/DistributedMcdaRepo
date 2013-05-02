@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CalculatingEngine
+﻿namespace CalculatingEngine
 {
     public static class Configuration
     {
@@ -20,11 +14,11 @@ namespace CalculatingEngine
 
         static Configuration()
         {
-            TasksCalculationTimeout = 120000; //3600000; //1h
-            CalculatedTasksTimeout = 60000;//1800000; //0.5h
+            TasksCalculationTimeout = 3600000; //1h
+            CalculatedTasksTimeout = 1800000; //0.5h
 
-            TasksCalculationTimeoutCheckInterval = 1000; //900000; //15min
-            CalculatedTasksTimeoutCheckInterval = 2000;//900000; //15min
+            TasksCalculationTimeoutCheckInterval = 900000; //15min
+            CalculatedTasksTimeoutCheckInterval = 900000; //15min
 
             TasksQueueManagerCheckInterval = 1000;
             ActiveTasksCount = 5;

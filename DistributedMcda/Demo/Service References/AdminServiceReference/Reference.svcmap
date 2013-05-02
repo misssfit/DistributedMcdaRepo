@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a58f3536-75b5-4c27-8edd-b6846e306c57" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8090/CalculationService/Administration" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Administration.xsd" MetadataType="Schema" ID="3ad5d824-c7ab-4297-ab5c-96ae9ad9eccf" SourceId="1" SourceUrl="http://localhost:8090/CalculationService/Administration?xsd=xsd3" />
+    <MetadataFile FileName="Administration.disco" MetadataType="Disco" ID="a99746a6-1f8c-432f-8734-29ce05b3b635" SourceId="1" SourceUrl="http://localhost:8090/CalculationService/Administration?disco" />
+    <MetadataFile FileName="Administration1.xsd" MetadataType="Schema" ID="ddb77027-18ff-4012-850e-d0e4c34730de" SourceId="1" SourceUrl="http://localhost:8090/CalculationService/Administration?xsd=xsd2" />
+    <MetadataFile FileName="Administration2.xsd" MetadataType="Schema" ID="b87f0c99-570e-4470-8fc5-df5a337634fb" SourceId="1" SourceUrl="http://localhost:8090/CalculationService/Administration?xsd=xsd0" />
+    <MetadataFile FileName="Administration3.xsd" MetadataType="Schema" ID="9ddbe761-71fd-4e61-bc99-c806b1cf34bf" SourceId="1" SourceUrl="http://localhost:8090/CalculationService/Administration?xsd=xsd4" />
+    <MetadataFile FileName="CalculatingService.wsdl" MetadataType="Wsdl" ID="d55b3f38-a639-4c73-a6ea-8d3ce3c225a1" SourceId="1" SourceUrl="http://localhost:8090/CalculationService/Administration?wsdl" />
+    <MetadataFile FileName="Administration4.xsd" MetadataType="Schema" ID="bf8e9467-1fc6-41ba-9bae-2fb8dc2e2b15" SourceId="1" SourceUrl="http://localhost:8090/CalculationService/Administration?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

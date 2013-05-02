@@ -2,6 +2,20 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" />
   <xs:import schemaLocation="http://localhost:8090/CalculationService/CalculatingService?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
+  <xs:element name="DeleteTask">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteTaskResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" minOccurs="0" name="DeleteTaskResult" nillable="true" type="q1:OperationStatus" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetAllMethods">
     <xs:complexType>
       <xs:sequence />
@@ -10,19 +24,7 @@
   <xs:element name="GetAllMethodsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" minOccurs="0" name="GetAllMethodsResult" nillable="true" type="q1:ArrayOfMethodDescription" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetAllTasks">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetAllTasksResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="GetAllTasksResult" nillable="true" type="q2:ArrayOfKeyValuePairOfTaskPoolArrayOfTaskInfo5byVVVPs" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" minOccurs="0" name="GetAllMethodsResult" nillable="true" type="q2:ArrayOfMethodDescription" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -41,20 +43,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="DeleteTask">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteTaskResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" minOccurs="0" name="DeleteTaskResult" nillable="true" type="q5:OperationStatus" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="GetResult">
     <xs:complexType>
       <xs:sequence>
@@ -65,21 +53,7 @@
   <xs:element name="GetResultResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" minOccurs="0" name="GetResultResult" nillable="true" type="q6:CalculationResult" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="PrioritizeTask">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="PrioritizeTaskResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" minOccurs="0" name="PrioritizeTaskResult" nillable="true" type="q7:OperationStatus" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data" minOccurs="0" name="GetResultResult" nillable="true" type="q5:CalculationResult" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
