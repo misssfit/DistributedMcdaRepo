@@ -16,6 +16,22 @@ namespace McdaLibrary
         private double[,] ET;
         private double[,] W;
 
+        private static readonly McdaMethodInfo _mcdaMethodInfo;
+
+        static Promethee()
+        {
+            _mcdaMethodInfo = new McdaMethodInfo
+            {
+                Name = "Promethee",
+                ObjectType = typeof(Promethee),
+                Input = new List<string> { "weights", "evaluationTable" },
+            };
+        }
+
+        public McdaMethodInfo MethodMetadata
+        {
+            get { return _mcdaMethodInfo; }
+        }
 
         public double[][] Calculate(List<KeyValuePair<string, double[][]>> input)
         {

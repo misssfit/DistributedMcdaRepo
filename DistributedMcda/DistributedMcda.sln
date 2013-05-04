@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfHostedService", "SelfHo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McdaLibrary", "McdaLibrary\McdaLibrary.csproj", "{336CD565-E408-404A-9453-B9C6E06A6831}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalMcdaLibrary", "ExternalMcdaLibrary\ExternalMcdaLibrary.csproj", "{396FF484-2CE4-4E27-B84E-8B248793E60E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{336CD565-E408-404A-9453-B9C6E06A6831}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{336CD565-E408-404A-9453-B9C6E06A6831}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{336CD565-E408-404A-9453-B9C6E06A6831}.Release|Any CPU.Build.0 = Release|Any CPU
+		{396FF484-2CE4-4E27-B84E-8B248793E60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{396FF484-2CE4-4E27-B84E-8B248793E60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{396FF484-2CE4-4E27-B84E-8B248793E60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{396FF484-2CE4-4E27-B84E-8B248793E60E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

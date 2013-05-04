@@ -68,7 +68,7 @@ namespace Demo
                     //}
                     ////    Console.WriteLine("Result" + "  " + res1.Status);
                     //PrintArray(((double[][])res.Data).ToMultiD());
-
+                    Thread.Sleep(3000);
                     var methods = client.GetAllMethods();
                     foreach (var methodDescription in methods)
                     {

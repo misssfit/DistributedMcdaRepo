@@ -8,7 +8,11 @@ namespace CalculatingEngine
     public class CalculatingService : ICalculatingService, IAdministrationService
     {
         private readonly TaskQueueManager _taskQueueManager = new TaskQueueManager();
-        
+     
+        static CalculatingService()
+        {
+            MethodRegistry.Run();
+        }
         public List<MethodDescription> GetAllMethods()
         {
             return MethodRegistry.GetAll();
@@ -55,6 +59,11 @@ namespace CalculatingEngine
             var operationStatus = new OperationStatus();
             operationStatus.Status = _taskQueueManager.DeleteAll(pool) ? RequestStatus.Ok : RequestStatus.Error;
             return operationStatus;
+        }
+
+        public void RefreshMethodRegistry()
+        {
+            MethodRegistry.RefreshMethodRegistry();
         }
     }
 }
