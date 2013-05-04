@@ -49,7 +49,7 @@ namespace CalculatingEngine
             CalculationStartTimestamp = DateTime.UtcNow;
             try
             {
-                IMcdaMethod methodObject = MethodRegistry.GetMethodObject(_methodName);
+                IMcdaMethod methodObject = MethodRegistry.Instance.GetMethodObject(_methodName);
                 var result = methodObject.Calculate(_inputParameters);
                 Data = result;
             }

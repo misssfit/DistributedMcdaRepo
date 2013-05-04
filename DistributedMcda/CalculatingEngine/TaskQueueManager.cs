@@ -8,6 +8,23 @@ namespace CalculatingEngine
 {
     public class TaskQueueManager : TimerBasedObject
     {
+        private static TaskQueueManager _instance;
+        private static object _instanceLock = new object();
+        public static TaskQueueManager Instance
+        {
+            get
+            {
+                lock (_instanceLock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new TaskQueueManager();
+                    }
+                    return _instance;
+                }
+            }
+        }
+
         private List<CalculationTask> _tasksQueue = new List<CalculationTask>();
         private List<CalculationTask> _activeTasks = new List<CalculationTask>();
         private List<CalculationTask> _inactiveTasks = new List<CalculationTask>();
@@ -15,7 +32,7 @@ namespace CalculatingEngine
         protected Timer _cleanInactiveTasksTimer;
         protected Timer _cleanTimedOutTasksTimer;
 
-        public TaskQueueManager()
+        protected TaskQueueManager()
             : base(Configuration.TasksQueueManagerCheckInterval)
         {
             _cleanInactiveTasksTimer = new Timer();

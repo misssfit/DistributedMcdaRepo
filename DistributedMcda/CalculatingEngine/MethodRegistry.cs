@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,22 +15,43 @@ using McdaLibrary;
 
 namespace CalculatingEngine
 {
-    public static class MethodRegistry
+    public class MethodRegistry
     {
+        private static MethodRegistry _instance;
+        private static object _instanceLock = new object();
+        private static object _methodListLock = new object();
 
-        private static List<Tuple<McdaMethodInfo, string>> _methods;
-        private static FileSystemWatcher _fileSystemWatcher;
-        public static string _externalLibraryPath = "..\\..\\..\\ExternalLibraries";
-        private static readonly DirectoryInfo _directoryInfo = new DirectoryInfo(_externalLibraryPath);
 
-        private static readonly Type _interfaceType = typeof(IMcdaMethod);
-
-        static MethodRegistry()
+        public static MethodRegistry Instance
         {
-            _methods = new List<Tuple<McdaMethodInfo, string>>();
-            RefreshMethodRegistry();
+            get
+            {
+                lock (_instanceLock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new MethodRegistry();
+                    }
+                    return _instance;
+                }
+            }
         }
-        public static void Run()
+
+        [ImportMany(typeof(IMcdaMethod))]
+        private List<IMcdaMethod> _methods;
+
+        private FileSystemWatcher _fileSystemWatcher;
+        public string _externalLibraryPath = "..\\..\\..\\ExternalLibraries";
+        private readonly DirectoryInfo _directoryInfo;
+
+        protected MethodRegistry()
+        {
+            _directoryInfo = new DirectoryInfo(_externalLibraryPath);
+
+            Compose();
+        }
+
+        public void Run()
         {
             if (_fileSystemWatcher == null)
             {
@@ -37,8 +61,7 @@ namespace CalculatingEngine
                     _fileSystemWatcher.Path = _directoryInfo.FullName;
                     /* Watch for changes in LastAccess and LastWrite times, and
                    the renaming of files or directories. */
-                    _fileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite |
-                                                      NotifyFilters.FileName;
+                    _fileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
                     // Only watch text files.
                     _fileSystemWatcher.Filter = "*.dll";
 
@@ -54,113 +77,70 @@ namespace CalculatingEngine
                 {
                     Console.WriteLine("! Exception occured starting file watcher." + e.Message);
                 }
-
             }
 
         }
-        private static void OnChanged(object source, FileSystemEventArgs e)
+
+        public void RefreshMethodRegistry()
+        {
+            Compose();
+        }
+        private void OnChanged(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
             Console.WriteLine("(@) File: " + e.FullPath + " " + e.ChangeType);
-
-            switch (e.ChangeType)
-            {
-                case WatcherChangeTypes.Created:
-                    RegisterExternalLibraries(e.FullPath);
-                    break;
-                case WatcherChangeTypes.Deleted:
-                    DeregisterExternalLibraries(e.FullPath);
-                    break;
-                case WatcherChangeTypes.Changed:
-                    DeregisterExternalLibraries(e.FullPath);
-                    RegisterExternalLibraries(e.FullPath);
-                    break;
-            }
-
+            Compose();
         }
 
-        private static void DeregisterExternalLibraries(string path)
+        internal List<MethodDescription> GetAll()
         {
-            lock (_methods)
+            lock (_methodListLock)
             {
-                _methods.RemoveAll(p => p.Item2 == path);
+                return _methods.Select(p => new MethodDescription { MethodName = p.MethodMetadata.Name, Parameters = p.MethodMetadata.Input }).ToList();
             }
         }
 
-        private static void RegisterAllKnownMethods()
-        {
-            var types =
-                _interfaceType.Assembly.GetTypes()
-                             .Where(p => p != _interfaceType && _interfaceType.IsAssignableFrom(p))
-                             .ToList();
-            AddTypesToRegistry(types);
 
-        }
-
-        private static void AddTypesToRegistry(List<Type> types, string assemblyPath = "")
+        internal IMcdaMethod GetMethodObject(string methodName)
         {
-            lock (_methods)
+            lock (_methodListLock)
             {
-                foreach (var type in types)
+
+                if (_methods.Any(p => p.MethodMetadata.Name == methodName) == true)
                 {
-                    var methodObject = (IMcdaMethod)Activator.CreateInstance(type);
-                    var methodMetadata = methodObject.MethodMetadata;
-                    if (_methods.Any(p => p.Item1.Name == methodMetadata.Name) == false)
-                    {
-                        _methods.Add(Tuple.Create(methodMetadata, assemblyPath));
-                    }
+                    var method = _methods.Single(p => p.MethodMetadata.Name == methodName);
+                    return method;
+
+                }
+                else
+                {
+                    throw new Exception("Unknown method");
                 }
             }
         }
 
-        internal static List<MethodDescription> GetAll()
-        {
-            lock (_methods)
-            {
-                return _methods.Select(p => new MethodDescription { MethodName = p.Item1.Name, Parameters = p.Item1.Input }).ToList();
-            }
-        }
-
-        internal static void RefreshMethodRegistry()
-        {
-            RegisterAllKnownMethods();
-            foreach (var dll in _directoryInfo.EnumerateFiles().Where(p => p.Extension == ".dll").ToList())
-            {
-                RegisterExternalLibraries(dll.FullName);
-            }
-
-        }
-
-        private static void RegisterExternalLibraries(string assemblyPath)
+        private void Compose()
         {
             try
             {
-                var assembly = Assembly.LoadFrom(assemblyPath);
+                lock (_methodListLock)
+                {
 
-                var types =
-                    assembly.GetTypes().Where(p => p != _interfaceType && _interfaceType.IsAssignableFrom(p)).ToList();
-                AddTypesToRegistry(types, assemblyPath);
-                
+                    var directoryCatalog = new DirectoryCatalog(_directoryInfo.FullName);
+                    var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+                    var catalog = new AggregateCatalog(new ComposablePartCatalog[] { assemblyCatalog, directoryCatalog });
+
+                    var container = new CompositionContainer(catalog);
+                    container.ComposeParts(this);
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("! Exception occured during loading external library: " + assemblyPath + ". " + e.Message);
+
+                Console.WriteLine("! " + e.Message);
             }
 
         }
 
-        internal static IMcdaMethod GetMethodObject(string methodName)
-        {
-            if (_methods.Any(p => p.Item1.Name == methodName) == true)
-            {
-                var info = _methods.Single(p => p.Item1.Name == methodName);
-                return (IMcdaMethod)Activator.CreateInstance(info.Item1.ObjectType);
-
-            }
-            else
-            {
-                throw new Exception("Unknown method");
-            }
-        }
     }
 }
