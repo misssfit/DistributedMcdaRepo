@@ -6,10 +6,6 @@ using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Permissions;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using CalculatingEngine.Data;
 using McdaLibrary;
 
@@ -46,6 +42,7 @@ namespace CalculatingEngine
 
         protected MethodRegistry()
         {
+            AppDomain.CurrentDomain.SetShadowCopyFiles();
             _directoryInfo = new DirectoryInfo(_externalLibraryPath);
 
             Compose();
