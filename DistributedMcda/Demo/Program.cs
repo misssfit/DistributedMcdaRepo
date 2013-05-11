@@ -32,7 +32,7 @@ namespace Demo
 
 
                     var list = new List<OperationStatus>();
-                    for (int i = 0; i < 20; ++i)
+                    for (int i = 0; i < 50; ++i)
                     {
                         var res1 = client.Calculate("Promethee", input.ToArray());
                         list.Add(res1);
@@ -68,7 +68,7 @@ namespace Demo
                     //}
                     ////    Console.WriteLine("Result" + "  " + res1.Status);
                     //PrintArray(((double[][])res.Data).ToMultiD());
-
+                    Thread.Sleep(3000);
                     var methods = client.GetAllMethods();
                     foreach (var methodDescription in methods)
                     {

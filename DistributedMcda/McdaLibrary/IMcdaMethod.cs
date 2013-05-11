@@ -8,7 +8,7 @@ namespace McdaLibrary
 {
     public interface IMcdaMethod
     {
-       // McdaMethodInfo MethodMetadata { get; }
+        McdaMethodInfo MethodMetadata { get; }
         double[][] Calculate(List<KeyValuePair<string, double[][]>> _inputParameters);
     }
 }

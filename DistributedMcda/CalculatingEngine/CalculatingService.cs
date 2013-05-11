@@ -7,23 +7,25 @@ namespace CalculatingEngine
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class CalculatingService : ICalculatingService, IAdministrationService
     {
-        private readonly TaskQueueManager _taskQueueManager = new TaskQueueManager();
-        
+        public CalculatingService()
+        {
+            MethodRegistry.Instance.Run();
+        }
         public List<MethodDescription> GetAllMethods()
         {
-            return MethodRegistry.GetAll();
+            return MethodRegistry.Instance.GetAll();
         }
 
         public List<KeyValuePair<TaskPool, List<TaskInfo>>> GetAllTasks()
         {
-            var result = _taskQueueManager.GetAllTasks();
+            var result = TaskQueueManager.Instance.GetAllTasks();
             return result;
         }
 
         public OperationStatus Calculate(string methodName, List<KeyValuePair<string, double[][]>> inputParameters)
         {
             var operationStatus = new OperationStatus();
-            operationStatus.Id = _taskQueueManager.CreateNewTask(methodName, inputParameters);
+            operationStatus.Id = TaskQueueManager.Instance.CreateNewTask(methodName, inputParameters);
             operationStatus.Status = RequestStatus.NotReady;
             return operationStatus;
         }
@@ -32,13 +34,13 @@ namespace CalculatingEngine
         {
             var operationStatus = new OperationStatus();
             operationStatus.Id = id;
-            operationStatus.Status = _taskQueueManager.DeleteTask(id) ? RequestStatus.Ok : RequestStatus.Error;
+            operationStatus.Status = TaskQueueManager.Instance.DeleteTask(id) ? RequestStatus.Ok : RequestStatus.Error;
             return operationStatus;
         }
 
         public CalculationResult GetResult(string id)
         {
-            var calculationResult = _taskQueueManager.GetResult(id);
+            var calculationResult = TaskQueueManager.Instance.GetResult(id);
             return calculationResult;
         }
 
@@ -46,15 +48,20 @@ namespace CalculatingEngine
         {
             var operationStatus = new OperationStatus();
             operationStatus.Id = id;
-            operationStatus.Status = _taskQueueManager.PrioritizeTask(id) ? RequestStatus.Ok : RequestStatus.Error;
+            operationStatus.Status = TaskQueueManager.Instance.PrioritizeTask(id) ? RequestStatus.Ok : RequestStatus.Error;
             return operationStatus;
         }
 
         public OperationStatus DeleteAll(TaskPool pool)
         {
             var operationStatus = new OperationStatus();
-            operationStatus.Status = _taskQueueManager.DeleteAll(pool) ? RequestStatus.Ok : RequestStatus.Error;
+            operationStatus.Status = TaskQueueManager.Instance.DeleteAll(pool) ? RequestStatus.Ok : RequestStatus.Error;
             return operationStatus;
+        }
+
+        public void RefreshMethodRegistry()
+        {
+            MethodRegistry.Instance.RefreshMethodRegistry();
         }
     }
 }
