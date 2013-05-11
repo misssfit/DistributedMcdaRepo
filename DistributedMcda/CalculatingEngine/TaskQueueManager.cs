@@ -255,11 +255,14 @@ namespace CalculatingEngine
                 {
                     lock (_tasksQueue)
                     {
-                        var task = _tasksQueue.First();
-                        task.Run();
-                        Console.WriteLine("Started: " + task);
-                        _tasksQueue.RemoveAt(0);
-                        _activeTasks.Add(task);
+                        if (_tasksQueue.Any() == true)
+                        {
+                            var task = _tasksQueue.First();
+                            task.Run();
+                            Console.WriteLine("Started: " + task);
+                            _tasksQueue.RemoveAt(0);
+                            _activeTasks.Add(task);
+                        }
                     }
                 }
             }
