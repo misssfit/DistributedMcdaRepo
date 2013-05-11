@@ -15,5 +15,9 @@ namespace CalculatingEngine
 
         [OperationContract]
         OperationStatus DeleteAll(TaskPool pool);
+
+        [OperationContract]
+        void RefreshMethodRegistry();
+        
     }
 }

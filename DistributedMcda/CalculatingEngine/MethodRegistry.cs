@@ -1,71 +1,143 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using CalculatingEngine.Data;
 using McdaLibrary;
 
 namespace CalculatingEngine
 {
-    public static class MethodRegistry
+    public class MethodRegistry
     {
+        private static MethodRegistry _instance;
+        private static object _instanceLock = new object();
+        private static object _methodListLock = new object();
 
-        private static List<McdaMethodInfo> _methods;
 
-        static MethodRegistry()
+        public static MethodRegistry Instance
         {
-            _methods = new List<McdaMethodInfo>();
-            RegisterAllKnownMethods();
-        }
-
-        private static void RegisterAllKnownMethods()
-        {
-            var methodMetadata = new McdaMethodInfo
+            get
             {
-                Name = "Promethee",
-                ObjectType = typeof(Promethee),
-                Input = new List<string> { "weights", "evaluationTable" },
-            };
-            _methods.Add(methodMetadata);
-        }
-
-        public static void RegisterMethod(McdaMethodInfo methodInfo)
-        {
-            lock (_methods)
-            {
-                if (_methods.Any(p => p.Name == methodInfo.Name) == false)
+                lock (_instanceLock)
                 {
-                    _methods.Add(methodInfo);
+                    if (_instance == null)
+                    {
+                        _instance = new MethodRegistry();
+                    }
+                    return _instance;
+                }
+            }
+        }
+
+        [ImportMany(typeof(IMcdaMethod))]
+        private List<IMcdaMethod> _methods;
+
+        private FileSystemWatcher _fileSystemWatcher;
+        public string _externalLibraryPath = "..\\..\\..\\ExternalLibraries";
+        private readonly DirectoryInfo _directoryInfo;
+
+        protected MethodRegistry()
+        {
+            AppDomain.CurrentDomain.SetShadowCopyFiles();
+            _directoryInfo = new DirectoryInfo(_externalLibraryPath);
+
+            Compose();
+        }
+
+        public void Run()
+        {
+            if (_fileSystemWatcher == null)
+            {
+                try
+                {
+                    _fileSystemWatcher = new FileSystemWatcher();
+                    _fileSystemWatcher.Path = _directoryInfo.FullName;
+                    /* Watch for changes in LastAccess and LastWrite times, and
+                   the renaming of files or directories. */
+                    _fileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
+                    // Only watch text files.
+                    _fileSystemWatcher.Filter = "*.dll";
+
+                    // Add event handlers.
+                    _fileSystemWatcher.Changed += OnChanged;
+                    _fileSystemWatcher.Created += OnChanged;
+                    _fileSystemWatcher.Deleted += OnChanged;
+
+                    // Begin watching.
+                    _fileSystemWatcher.EnableRaisingEvents = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("! Exception occured starting file watcher." + e.Message);
+                }
+            }
+
+        }
+
+        public void RefreshMethodRegistry()
+        {
+            Compose();
+        }
+        private void OnChanged(object source, FileSystemEventArgs e)
+        {
+            // Specify what is done when a file is changed, created, or deleted.
+            Console.WriteLine("(@) File: " + e.FullPath + " " + e.ChangeType);
+            Compose();
+        }
+
+        internal List<MethodDescription> GetAll()
+        {
+            lock (_methodListLock)
+            {
+                return _methods.Select(p => new MethodDescription { MethodName = p.MethodMetadata.Name, Parameters = p.MethodMetadata.Input }).ToList();
+            }
+        }
+
+
+        internal IMcdaMethod GetMethodObject(string methodName)
+        {
+            lock (_methodListLock)
+            {
+
+                if (_methods.Any(p => p.MethodMetadata.Name == methodName) == true)
+                {
+                    var method = _methods.Single(p => p.MethodMetadata.Name == methodName);
+                    return method;
+
                 }
                 else
                 {
-                    throw new Exception("Method with given name is already registred.");
+                    throw new Exception("Unknown method");
                 }
             }
         }
 
-        internal static List<MethodDescription> GetAll()
+        private void Compose()
         {
-            lock (_methods)
+            try
             {
-                return _methods.Select(p => new MethodDescription { MethodName = p.Name, Parameters = p.Input }).ToList();
+                lock (_methodListLock)
+                {
+
+                    var directoryCatalog = new DirectoryCatalog(_directoryInfo.FullName);
+                    var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+                    var catalog = new AggregateCatalog(new ComposablePartCatalog[] { assemblyCatalog, directoryCatalog });
+
+                    var container = new CompositionContainer(catalog);
+                    container.ComposeParts(this);
+                }
             }
+            catch (Exception e)
+            {
+
+                Console.WriteLine("! " + e.Message);
+            }
+
         }
 
-        internal static IMcdaMethod GetMethodObject(string methodName)
-        {
-            if (_methods.Any(p => p.Name == methodName) == true)
-            {
-                var info = _methods.Single(p => p.Name == methodName);
-                return (IMcdaMethod)Activator.CreateInstance(info.ObjectType);
-
-            }
-            else
-            {
-                throw new Exception("Unknown method");
-            }
-        }
     }
 }
