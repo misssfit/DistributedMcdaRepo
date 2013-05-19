@@ -13,9 +13,9 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-            using (var client = new CalculatingServiceClient())
+            using (var client = new CalculatingServiceClient("WSHttpBinding_ICalculatingService"))
             {
-                using (var adm = new AdministrationServiceClient())
+                using (var adm = new AdministrationServiceClient("WSHttpBinding_IAdministrationService"))
                 {
                     var et = SampleET();
 
@@ -32,7 +32,7 @@ namespace Demo
 
 
                     var list = new List<OperationStatus>();
-                    for (int i = 0; i < 50; ++i)
+                    for (int i = 0; i < 150; ++i)
                     {
                         var res1 = client.Calculate("Promethee", input.ToArray());
                         list.Add(res1);
