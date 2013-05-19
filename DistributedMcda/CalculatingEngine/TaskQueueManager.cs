@@ -102,7 +102,7 @@ namespace CalculatingEngine
                     return true;
                 }
             }
-
+            
             Console.WriteLine("Cannot delete task with id: " + id + ". Task does not exist.");
             return false;
         }
@@ -189,7 +189,6 @@ namespace CalculatingEngine
                 var tasks = _tasksQueue.Select(p => p.TaskInfo).ToList();
                 result.Add(new KeyValuePair<TaskPool, List<TaskInfo>>(TaskPool.Queue, tasks));
             }
-
             return result;
         }
 
@@ -251,7 +250,7 @@ namespace CalculatingEngine
                         _inactiveTasks.AddRange(tasksToMove);
                     }
                 }
-                while (_activeTasks.Count < Configuration.ActiveTasksCount)
+                while (_activeTasks.Count < Configuration.ActiveTasksCount && _tasksQueue.Any())
                 {
                     lock (_tasksQueue)
                     {
