@@ -18,6 +18,11 @@ namespace CalculatingEngine
 
         [OperationContract]
         void RefreshMethodRegistry();
-        
+
+        [OperationContract]
+        void ConfigureTasksCalculationTimeout(int timeoutValue);
+
+        [OperationContract]
+        void ConfigureCalculatedTasksTimeout(int timeoutValue);
     }
 }

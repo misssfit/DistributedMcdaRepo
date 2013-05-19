@@ -66,4 +66,28 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="ConfigureTasksCalculationTimeout">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="timeoutValue" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConfigureTasksCalculationTimeoutResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConfigureCalculatedTasksTimeout">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="timeoutValue" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConfigureCalculatedTasksTimeoutResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
