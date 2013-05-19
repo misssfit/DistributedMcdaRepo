@@ -26,14 +26,15 @@ namespace AdminGui
             tasksCalculationTimeoutTextBox.Text = "3600";
             calculatedTasksTimeoutTextBox.Text = "1800";
             timerIntervalTextBox.Text = "10000";
-
-            endpoint = new EndpointAddress("http://localhost:8090/CalculationService/Administration");
-            
-            bool connectionResult = ConnectToAdministrationServer();
-            managePanelsVisibilty(connectionResult);
+            configureActiveTasksCountTextBox.Text = "5";
+            endpointTextBox.Text = "http://localhost:8090/CalculationService/Administration";
+                        
+            //bool connectionResult = ConnectToAdministrationServer();
+            managePanelsVisibilty(false);
             
             bwSendTasksCalculationTimeout.DoWork += setTasksCalculationTimeout;
             bwSendCalculatedTasksTimeout.DoWork += setCalculatedTasksTimeout;
+            bwConfigureActiveTasksCount.DoWork += setActiveTasksCount;
 
             bwPrioritizeTask.DoWork += prioritizeTask;
             bwPrioritizeTask.RunWorkerCompleted += updateTasksView;
@@ -52,11 +53,11 @@ namespace AdminGui
                 UpdateTasksTimer.Enabled = false;
 
                 connectionToServerFailedLabel.Visible = true;
-                reconnectToServerButton.Visible = true;
-
+                
                 configurationPanel.Visible = false;
-                tasksPanel.Visible = false;
+                activeTasksPanel.Visible = false;
                 queueTasksPanel.Visible = false;
+                inactiveTasksPanel.Visible = false;
                 timerIntervalPanel.Visible = false;
             }
             else
@@ -64,11 +65,11 @@ namespace AdminGui
                 UpdateTasksTimer.Enabled = true;
 
                 connectionToServerFailedLabel.Visible = false;
-                reconnectToServerButton.Visible = false;
-
+                
                 configurationPanel.Visible = true;
-                tasksPanel.Visible = true;
+                activeTasksPanel.Visible = true;
                 queueTasksPanel.Visible = true;
+                inactiveTasksPanel.Visible = true;
                 timerIntervalPanel.Visible = true;
             }
         }
@@ -79,6 +80,7 @@ namespace AdminGui
             {
                 if (srv == null)
                 {
+                    endpoint = new EndpointAddress(endpointTextBox.Text);
                     srv = new AdministrationServiceClient("WSHttpBinding_IAdministrationService", endpoint);
                 }
                 if (srv.State == CommunicationState.Closed || srv.State == CommunicationState.Created)
@@ -87,6 +89,7 @@ namespace AdminGui
                 }
                 else if (srv.State == CommunicationState.Faulted)
                 {
+                    endpoint = new EndpointAddress(endpointTextBox.Text);
                     srv = new AdministrationServiceClient("WSHttpBinding_IAdministrationService", endpoint);
                     srv.Open();
                 }
@@ -157,13 +160,36 @@ namespace AdminGui
             Console.WriteLine("calculated tasks timeout set to: " + (int)e.Argument + " [ms]");
         }
 
+        private void configureActiveTasksCountButton_Click(object sender, EventArgs e)
+        {
+            int activeTasksCount;
+            if (int.TryParse(configureActiveTasksCountTextBox.Text, out activeTasksCount) == true)
+            {
+                bwConfigureActiveTasksCount.RunWorkerAsync(activeTasksCount);
+            }
+            else
+            {
+                MessageBox.Show("Nie można sparsować wartości dla ilości aktywnych zadań");
+            }
+        }
+
+        private void setActiveTasksCount(object sender, DoWorkEventArgs e)
+        {
+            if (ConnectToAdministrationServer() == false)
+            {
+                e.Cancel = true;
+                return;
+            }
+            srv.ConfigureActiveTasksCount((int)e.Argument);
+            Console.WriteLine("active tasks count set to: " + (int)e.Argument);
+        }
+
         private void updateTasksDataButton_Click(object sender, EventArgs e)
         {
             if (bwUpdateTasksView.IsBusy == false)
             {
                 bwUpdateTasksView.RunWorkerAsync();
             }
-            //updateTasksData();
         }
 
         private void sendUpdateTasksRequest(object sender, DoWorkEventArgs e)
@@ -182,24 +208,23 @@ namespace AdminGui
             {
                 return;
             }
-            List<TaskInfo> queueTasksInfo = new List<TaskInfo>();
-            List<TaskInfo> tasksInfo = new List<TaskInfo>();
-
+            
             KeyValuePair<TaskPool, TaskInfo[]>[] result = (KeyValuePair<TaskPool, TaskInfo[]>[])e.Result;
-
             foreach (var keyValuePair in result)
             {
                 if (keyValuePair.Key.Equals(TaskPool.Queue))
                 {
-                    queueTasksInfo.AddRange(keyValuePair.Value);
+                    queueTasksDataGridView.DataSource = keyValuePair.Value;
+                }
+                else if (keyValuePair.Key.Equals(TaskPool.Active))
+                {
+                    activeTasksDataGridView.DataSource = keyValuePair.Value;
                 }
                 else
                 {
-                    tasksInfo.AddRange(keyValuePair.Value);
+                    inactiveTasksDataGridView.DataSource = keyValuePair.Value;
                 }
             }
-            queueTasksDataGridView.DataSource = queueTasksInfo;
-            tasksDataGridView.DataSource = tasksInfo;
         }
 
         private void updateTasksView(object sender, RunWorkerCompletedEventArgs e)
@@ -262,9 +287,22 @@ namespace AdminGui
 
         private void removeTaskButton_Click(object sender, EventArgs e)
         {
-            if (tasksDataGridView.SelectedRows.Count > 0)
+            if (activeTasksDataGridView.SelectedRows.Count > 0)
             {
-                String taskId = (String)tasksDataGridView.SelectedRows[0].Cells[0].Value;
+                String taskId = (String)activeTasksDataGridView.SelectedRows[0].Cells[0].Value;
+                bwDeleteTask.RunWorkerAsync(taskId);
+            }
+            else
+            {
+                MessageBox.Show("Należy zaznaczyć zadanie do usunięcia!");
+            }
+        }
+
+        private void removeInactiveTaskButton_Click(object sender, EventArgs e)
+        {
+            if (inactiveTasksDataGridView.SelectedRows.Count > 0)
+            {
+                String taskId = (String)inactiveTasksDataGridView.SelectedRows[0].Cells[0].Value;
                 bwDeleteTask.RunWorkerAsync(taskId);
             }
             else
@@ -292,8 +330,6 @@ namespace AdminGui
             {
                 MessageBox.Show("Nie można sparsować wartości interwału dla zegara odświeżania!");
             }
-        }
-
-                
+        }        
     }
 }

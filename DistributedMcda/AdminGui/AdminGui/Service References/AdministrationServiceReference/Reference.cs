@@ -254,6 +254,9 @@ namespace AdminGui.AdministrationServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/ConfigureCalculatedTasksTimeout", ReplyAction="http://tempuri.org/IAdministrationService/ConfigureCalculatedTasksTimeoutResponse" +
             "")]
         void ConfigureCalculatedTasksTimeout(int timeoutValue);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/ConfigureActiveTasksCount", ReplyAction="http://tempuri.org/IAdministrationService/ConfigureActiveTasksCountResponse")]
+        void ConfigureActiveTasksCount(int activeTasksCount);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -309,6 +312,10 @@ namespace AdminGui.AdministrationServiceReference {
         
         public void ConfigureCalculatedTasksTimeout(int timeoutValue) {
             base.Channel.ConfigureCalculatedTasksTimeout(timeoutValue);
+        }
+        
+        public void ConfigureActiveTasksCount(int activeTasksCount) {
+            base.Channel.ConfigureActiveTasksCount(activeTasksCount);
         }
     }
 }

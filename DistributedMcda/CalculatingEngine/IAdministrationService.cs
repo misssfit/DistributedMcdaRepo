@@ -24,5 +24,8 @@ namespace CalculatingEngine
 
         [OperationContract]
         void ConfigureCalculatedTasksTimeout(int timeoutValue);
+
+        [OperationContract]
+        void ConfigureActiveTasksCount(int activeTasksCount);
     }
 }

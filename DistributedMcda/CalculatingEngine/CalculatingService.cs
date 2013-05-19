@@ -82,5 +82,14 @@ namespace CalculatingEngine
                 Console.WriteLine("calculated tasks timeout set to: " + timeoutValue + " [ms]");
             }
         }
+
+        public void  ConfigureActiveTasksCount(int activeTasksCount)
+        {
+            if (activeTasksCount >= 0)
+            {
+                Configuration.ActiveTasksCount = activeTasksCount;
+                Console.WriteLine("Number of active tasks is now set to: " + activeTasksCount);
+            }
+        }
     }
 }

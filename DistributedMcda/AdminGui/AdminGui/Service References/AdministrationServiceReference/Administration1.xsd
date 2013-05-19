@@ -90,4 +90,16 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="ConfigureActiveTasksCount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="activeTasksCount" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConfigureActiveTasksCountResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
