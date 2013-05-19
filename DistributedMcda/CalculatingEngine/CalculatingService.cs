@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using CalculatingEngine.Data;
+using System;
 
 namespace CalculatingEngine
 {
@@ -62,6 +63,24 @@ namespace CalculatingEngine
         public void RefreshMethodRegistry()
         {
             MethodRegistry.Instance.RefreshMethodRegistry();
+        }
+
+        public void ConfigureTasksCalculationTimeout(int timeoutValue)
+        {
+            if (timeoutValue > 0)
+            {
+                Configuration.TasksCalculationTimeout = timeoutValue;
+                Console.WriteLine("tasks calculation timeout set to: " + timeoutValue + " [ms]");
+            }
+        }
+
+        public void ConfigureCalculatedTasksTimeout(int timeoutValue)
+        {
+            if (timeoutValue > 0)
+            {
+                Configuration.CalculatedTasksTimeout = timeoutValue;
+                Console.WriteLine("calculated tasks timeout set to: " + timeoutValue + " [ms]");
+            }
         }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Demo.ServiceReference {
+namespace AdminGui.AdministrationServiceReference {
     using System.Runtime.Serialization;
     using System;
     
@@ -26,7 +26,7 @@ namespace Demo.ServiceReference {
         private string IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Demo.ServiceReference.RequestStatus StatusField;
+        private AdminGui.AdministrationServiceReference.RequestStatus StatusField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -52,7 +52,7 @@ namespace Demo.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Demo.ServiceReference.RequestStatus Status {
+        public AdminGui.AdministrationServiceReference.RequestStatus Status {
             get {
                 return this.StatusField;
             }
@@ -88,20 +88,43 @@ namespace Demo.ServiceReference {
         NotReady = 2,
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TaskPool", Namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data")]
+    public enum TaskPool : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Queue = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Active = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Inactive = 2,
+    }
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MethodDescription", Namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TaskInfo", Namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data")]
     [System.SerializableAttribute()]
-    public partial class MethodDescription : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class TaskInfo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime CalculationStartTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime CreationTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MethodNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string[] ParametersField;
+        private AdminGui.AdministrationServiceReference.TaskStatus StatusField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -110,6 +133,45 @@ namespace Demo.ServiceReference {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime CalculationStartTime {
+            get {
+                return this.CalculationStartTimeField;
+            }
+            set {
+                if ((this.CalculationStartTimeField.Equals(value) != true)) {
+                    this.CalculationStartTimeField = value;
+                    this.RaisePropertyChanged("CalculationStartTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime CreationTime {
+            get {
+                return this.CreationTimeField;
+            }
+            set {
+                if ((this.CreationTimeField.Equals(value) != true)) {
+                    this.CreationTimeField = value;
+                    this.RaisePropertyChanged("CreationTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdField, value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
             }
         }
         
@@ -127,68 +189,7 @@ namespace Demo.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string[] Parameters {
-            get {
-                return this.ParametersField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParametersField, value) != true)) {
-                    this.ParametersField = value;
-                    this.RaisePropertyChanged("Parameters");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CalculationResult", Namespace="http://schemas.datacontract.org/2004/07/CalculatingEngine.Data")]
-    [System.SerializableAttribute()]
-    public partial class CalculationResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double[][] DataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Demo.ServiceReference.TaskStatus StatusField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public double[][] Data {
-            get {
-                return this.DataField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DataField, value) != true)) {
-                    this.DataField = value;
-                    this.RaisePropertyChanged("Data");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public Demo.ServiceReference.TaskStatus Status {
+        public AdminGui.AdministrationServiceReference.TaskStatus Status {
             get {
                 return this.StatusField;
             }
@@ -228,63 +229,86 @@ namespace Demo.ServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.ICalculatingService")]
-    public interface ICalculatingService {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AdministrationServiceReference.IAdministrationService")]
+    public interface IAdministrationService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskDeleter/DeleteTask", ReplyAction="http://tempuri.org/ITaskDeleter/DeleteTaskResponse")]
-        Demo.ServiceReference.OperationStatus DeleteTask(string id);
+        AdminGui.AdministrationServiceReference.OperationStatus DeleteTask(string id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculatingService/GetAllMethods", ReplyAction="http://tempuri.org/ICalculatingService/GetAllMethodsResponse")]
-        Demo.ServiceReference.MethodDescription[] GetAllMethods();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/GetAllTasks", ReplyAction="http://tempuri.org/IAdministrationService/GetAllTasksResponse")]
+        System.Collections.Generic.KeyValuePair<AdminGui.AdministrationServiceReference.TaskPool, AdminGui.AdministrationServiceReference.TaskInfo[]>[] GetAllTasks();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculatingService/Calculate", ReplyAction="http://tempuri.org/ICalculatingService/CalculateResponse")]
-        Demo.ServiceReference.OperationStatus Calculate(string methodName, System.Collections.Generic.KeyValuePair<string, double[][]>[] inputParameters);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/PrioritizeTask", ReplyAction="http://tempuri.org/IAdministrationService/PrioritizeTaskResponse")]
+        AdminGui.AdministrationServiceReference.OperationStatus PrioritizeTask(string id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculatingService/GetResult", ReplyAction="http://tempuri.org/ICalculatingService/GetResultResponse")]
-        Demo.ServiceReference.CalculationResult GetResult(string id);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/DeleteAll", ReplyAction="http://tempuri.org/IAdministrationService/DeleteAllResponse")]
+        AdminGui.AdministrationServiceReference.OperationStatus DeleteAll(AdminGui.AdministrationServiceReference.TaskPool pool);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/RefreshMethodRegistry", ReplyAction="http://tempuri.org/IAdministrationService/RefreshMethodRegistryResponse")]
+        void RefreshMethodRegistry();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/ConfigureTasksCalculationTimeout", ReplyAction="http://tempuri.org/IAdministrationService/ConfigureTasksCalculationTimeoutRespons" +
+            "e")]
+        void ConfigureTasksCalculationTimeout(int timeoutValue);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/ConfigureCalculatedTasksTimeout", ReplyAction="http://tempuri.org/IAdministrationService/ConfigureCalculatedTasksTimeoutResponse" +
+            "")]
+        void ConfigureCalculatedTasksTimeout(int timeoutValue);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ICalculatingServiceChannel : Demo.ServiceReference.ICalculatingService, System.ServiceModel.IClientChannel {
+    public interface IAdministrationServiceChannel : AdminGui.AdministrationServiceReference.IAdministrationService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class CalculatingServiceClient : System.ServiceModel.ClientBase<Demo.ServiceReference.ICalculatingService>, Demo.ServiceReference.ICalculatingService {
+    public partial class AdministrationServiceClient : System.ServiceModel.ClientBase<AdminGui.AdministrationServiceReference.IAdministrationService>, AdminGui.AdministrationServiceReference.IAdministrationService {
         
-        public CalculatingServiceClient() {
+        public AdministrationServiceClient() {
         }
         
-        public CalculatingServiceClient(string endpointConfigurationName) : 
+        public AdministrationServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public CalculatingServiceClient(string endpointConfigurationName, string remoteAddress) : 
+        public AdministrationServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public CalculatingServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public AdministrationServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public CalculatingServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public AdministrationServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
-        public Demo.ServiceReference.OperationStatus DeleteTask(string id) {
+        public AdminGui.AdministrationServiceReference.OperationStatus DeleteTask(string id) {
             return base.Channel.DeleteTask(id);
         }
         
-        public Demo.ServiceReference.MethodDescription[] GetAllMethods() {
-            return base.Channel.GetAllMethods();
+        public System.Collections.Generic.KeyValuePair<AdminGui.AdministrationServiceReference.TaskPool, AdminGui.AdministrationServiceReference.TaskInfo[]>[] GetAllTasks() {
+            return base.Channel.GetAllTasks();
         }
         
-        public Demo.ServiceReference.OperationStatus Calculate(string methodName, System.Collections.Generic.KeyValuePair<string, double[][]>[] inputParameters) {
-            return base.Channel.Calculate(methodName, inputParameters);
+        public AdminGui.AdministrationServiceReference.OperationStatus PrioritizeTask(string id) {
+            return base.Channel.PrioritizeTask(id);
         }
         
-        public Demo.ServiceReference.CalculationResult GetResult(string id) {
-            return base.Channel.GetResult(id);
+        public AdminGui.AdministrationServiceReference.OperationStatus DeleteAll(AdminGui.AdministrationServiceReference.TaskPool pool) {
+            return base.Channel.DeleteAll(pool);
+        }
+        
+        public void RefreshMethodRegistry() {
+            base.Channel.RefreshMethodRegistry();
+        }
+        
+        public void ConfigureTasksCalculationTimeout(int timeoutValue) {
+            base.Channel.ConfigureTasksCalculationTimeout(timeoutValue);
+        }
+        
+        public void ConfigureCalculatedTasksTimeout(int timeoutValue) {
+            base.Channel.ConfigureCalculatedTasksTimeout(timeoutValue);
         }
     }
 }
