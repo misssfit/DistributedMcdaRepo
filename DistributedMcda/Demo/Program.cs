@@ -29,34 +29,47 @@ namespace Demo
                     var input = new List<KeyValuePair<string, double[][]>>();
                     input.Add(new KeyValuePair<string, double[][]>("weights", w.ToJagged()));
                     input.Add(new KeyValuePair<string, double[][]>("evaluationTable", et.ToJagged()));
+                    
+                    // AHP method
 
-
-                    var list = new List<OperationStatus>();
-                    for (int i = 0; i < 150; ++i)
+                    var cpm = new double[,]
                     {
-                        var res1 = client.Calculate("Promethee", input.ToArray());
-                        list.Add(res1);
-                        Console.WriteLine("Created  " + res1.Id);
-                    }
+                        {1.0, 0.5, 3.0},
+                        {2.0, 1.0, 4.0},
+                        {(1.0/3), 0.25, 1.0}
+                    };
 
-                    for (int i = 5; i < 15; ++i)
-                    {
-                        var res1 = client.DeleteTask(list[i].Id);
-                        Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
-                    }
+                    var ahpInput = new List<KeyValuePair<string, double[][]>>();
+                    ahpInput.Add(new KeyValuePair<string,double[][]>("criteriaPreferenceMatrix", cpm.ToJagged()));
+                    var ahpResult = client.Calculate("AHP", ahpInput.ToArray());
+                    var ahpResult2 = client.GetResult(ahpResult.Id);
 
-                    for (int i = 5; i < 15; ++i)
-                    {
-                        var res1 = client.DeleteTask(list[i].Id);
-                        Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
-                    }
+                    //var list = new List<OperationStatus>();
+                    //for (int i = 0; i < 150; ++i)
+                    //{
+                    //    var res1 = client.Calculate("Promethee", input.ToArray());
+                    //    list.Add(res1);
+                    //    Console.WriteLine("Created  " + res1.Id);
+                    //}
+
+                    //for (int i = 5; i < 15; ++i)
+                    //{
+                    //    var res1 = client.DeleteTask(list[i].Id);
+                    //    Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
+                    //}
+
+                    //for (int i = 5; i < 15; ++i)
+                    //{
+                    //    var res1 = client.DeleteTask(list[i].Id);
+                    //    Console.WriteLine("Delete  " + res1.Id + "  " + res1.Status);
+                    //}
 
 
-                    foreach (var operationStatuse in list)
-                    {
-                        var res1 = client.GetResult(operationStatuse.Id);
-                        Console.WriteLine("Result  " + "  " + res1.Status);
-                    }
+                    //foreach (var operationStatuse in list)
+                    //{
+                    //    var res1 = client.GetResult(operationStatuse.Id);
+                    //    Console.WriteLine("Result  " + "  " + res1.Status);
+                    //}
 
 
                     //Thread.Sleep(3000);
@@ -80,16 +93,16 @@ namespace Demo
                         Console.WriteLine();
                     }
 
-                    while (true)
-                    {
-                        var tasks = adm.GetAllTasks();
-                        foreach (var keyValuePair in tasks)
-                        {
-                            PrintTaskPool(keyValuePair.Key, keyValuePair.Value);
-                        }
-                        Thread.Sleep(2000);
-                        Console.WriteLine("----------------------------------------------------------------");
-                    }
+                    //while (true)
+                    //{
+                    //    var tasks = adm.GetAllTasks();
+                    //    foreach (var keyValuePair in tasks)
+                    //    {
+                    //        PrintTaskPool(keyValuePair.Key, keyValuePair.Value);
+                    //    }
+                    //    Thread.Sleep(2000);
+                    //    Console.WriteLine("----------------------------------------------------------------");
+                    //}
                     Console.ReadLine();
                 }
             }

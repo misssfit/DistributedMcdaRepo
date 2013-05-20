@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\..\..\..\..\..\..\Downloads\MathNet.Numerics-2.5.0.27\Net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics.IO">
+      <HintPath>..\..\..\..\..\..\..\Downloads\MathNet.Numerics-2.5.0.27\Net40\MathNet.Numerics.IO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -42,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayHelper.cs" />
+    <Compile Include="AHP.cs" />
     <Compile Include="McdaMethodInfo.cs" />
     <Compile Include="Promethee.cs" />
     <Compile Include="IMcdaMethod.cs" />
