@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CalculatingEngine.Data;
-using McdaLibrary;
+using McdaMethodsContract;
 
 namespace CalculatingEngine
 {

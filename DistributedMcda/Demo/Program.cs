@@ -32,20 +32,54 @@ namespace Demo
                     
                     // AHP method
 
-                    var cpm = new double[,]
-                    {
-                        {1.0, 0.5, 3.0},
-                        {2.0, 1.0, 4.0},
-                        {(1.0/3), 0.25, 1.0}
-                    };
+                    //var cpm = new double[,]
+                    //{
+                    //    {1,     1/2,   3},
+                    //    {2,     1,     4},
+                    //    {1/3,   1/4,   1}
+                    //};
 
-                    var ahpInput = new List<KeyValuePair<string, double[][]>>();
-                    ahpInput.Add(new KeyValuePair<string,double[][]>("criteriaPreferenceMatrix", cpm.ToJagged()));
-                    var ahpResult = client.Calculate("AHP", ahpInput.ToArray());
-                    var ahpResult2 = client.GetResult(ahpResult.Id);
+                    //var apm1 = new double[,]
+                    //{
+                    //    {1,     1/4,    4,  1/6},
+                    //    {4,     1,      4,  1/4},
+                    //    {1/4,   1/4,    1,  1/5},
+                    //    {6,     4,      5,  1}
+                    //};
+
+                    //var apm2 = new double[,]
+                    //{
+                    //    {1,     2,      5,      1},
+                    //    {1/2,   1,      3,      2},
+                    //    {1/5,   1/3,    1,      1/4},
+                    //    {1,     1/2,    4,      1}
+                    //};
+
+                    //var apm3 = new double[,]
+                    //{
+                    //    {1,     3,      4,  1},
+                    //    {1/3,   1,      3,  1/4},
+                    //    {1/4,   1/3,    1,  1/2},
+                    //    {1,     4,      2,  1}
+                    //};
+
+                    //var ahpInput = new List<KeyValuePair<string, double[][]>>();
+                    //ahpInput.Add(new KeyValuePair<string, double[][]>("criteriaPreferenceMatrix", cpm.ToJagged()));
+                    //ahpInput.Add(new KeyValuePair<string, double[][]>("alternativesPreferenceMatrixes" + 1, apm1.ToJagged()));
+                    //ahpInput.Add(new KeyValuePair<string, double[][]>("alternativesPreferenceMatrixes" + 2, apm2.ToJagged()));
+                    //ahpInput.Add(new KeyValuePair<string, double[][]>("alternativesPreferenceMatrixes" + 3, apm3.ToJagged()));
+                    //var ahpResult = client.Calculate("AHP", ahpInput.ToArray());
+                    //Thread.Sleep(10000);
+                    //var ahpResult2 = client.GetResult(ahpResult.Id);
+                    //double[,] data = ahpResult2.Data.ToMultiD();
+                    //for (int i = 0; i < data.Length/2; i++)
+                    //{
+                    //    Console.WriteLine(data[i,0] + " " + data[i,1]);
+                    //}
+
 
                     //var list = new List<OperationStatus>();
-                    //for (int i = 0; i < 150; ++i)
+                    //for (int i = 0; i < 50; ++i)
                     //{
                     //    var res1 = client.Calculate("Promethee", input.ToArray());
                     //    list.Add(res1);

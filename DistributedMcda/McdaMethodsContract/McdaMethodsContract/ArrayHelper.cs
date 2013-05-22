@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace McdaLibrary
+namespace McdaMethodsContract
 {
     public static class ArrayHelper
     {
