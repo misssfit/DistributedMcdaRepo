@@ -22,7 +22,7 @@ namespace McdaLibrary
             {
                 Name = "AHP",
                 ObjectType = typeof(AHP),
-                Input = new List<string> { "criteriaPreferenceMatrix", "alternativesPreferenceMatrixes" },
+                Input = new List<string> { "criteriaPreferenceMatrix", "alternativesPreferenceMatrixesN (N is number of criteria)" },
             };
         }
 

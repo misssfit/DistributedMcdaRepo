@@ -30,7 +30,10 @@ namespace SelfHostedService
             //Create ServiceHost
             ServiceHost host = new ServiceHost(typeof(CalculatingEngine.CalculatingService), httpUrl);
             //Add a service endpoint
-            host.AddServiceEndpoint(typeof(CalculatingEngine.ICalculatingService), new WSHttpBinding(), "");
+            var binding = new WSHttpBinding();
+            binding.MaxReceivedMessageSize = 20000000;
+            binding.MaxBufferPoolSize = 20000000;
+            host.AddServiceEndpoint(typeof(CalculatingEngine.ICalculatingService), binding, "");
             //Enable metadata exchange
             ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
             smb.HttpGetEnabled = true;
